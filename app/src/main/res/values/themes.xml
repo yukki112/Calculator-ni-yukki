@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Calculator" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/navy</item>
+        <item name="colorPrimaryVariant">@color/teal</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/sky_blue</item>
+        <item name="colorSecondaryVariant">@color/beige</item>
+        <item name="colorOnSecondary">@color/navy</item>
+
+        <!-- Background and status bar -->
+        <item name="android:colorBackground">@color/black</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/navy</item>
+    </style>
+</resources>
