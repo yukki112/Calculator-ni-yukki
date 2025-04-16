@@ -11,7 +11,7 @@
         android:columnCount="4"
         android:rowCount="7">
 
-        <!-- Top row - Operations -->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/off"
             android:layout_width="0dp"
@@ -68,7 +68,6 @@
             android:textColor="@color/white"
             android:textSize="18sp" />
 
-        <!-- Scientific Row 1 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSin"
             android:layout_width="0dp"
@@ -125,7 +124,7 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
 
-        <!-- Scientific Row 2 -->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLn"
             android:layout_width="0dp"
@@ -134,7 +133,7 @@
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_margin="1.5dp"
-            android:backgroundTint="@color/teal"
+            android:backgroundTint="@color/navy"
             android:fontFamily="@font/pixelify_sans_semibold"
             android:text="View"
             android:textColor="@color/white"
@@ -182,7 +181,7 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
 
-        <!-- Number Row 1 -->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn7"
             android:layout_width="0dp"
@@ -245,7 +244,7 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <!-- Number Row 2 -->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn4"
             android:layout_width="0dp"
@@ -308,7 +307,7 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <!-- Number Row 3 -->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn1"
             android:layout_width="0dp"
@@ -371,7 +370,7 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <!-- Bottom Row -->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn0"
             android:layout_width="0dp"

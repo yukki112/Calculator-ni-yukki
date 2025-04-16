@@ -9,40 +9,63 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
-    <!-- Display Area (Top 25% of screen) -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <Button
+            android:id="@+id/btnDarkMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dark"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/black" />
+
+        <Button
+            android:id="@+id/btnLightMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Light"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/white" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.25"
+        android:gravity="end|bottom"
         android:orientation="vertical"
-        android:padding="8dp"
-        android:gravity="end|bottom">
-
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="30sp"
-            android:textColor="@color/white"
-            android:maxLines="1"
             android:ellipsize="end"
-            android:paddingHorizontal="10dp"/>
-
+            android:maxLines="1"
+            android:paddingHorizontal="10dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/output"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="50sp"
-            android:textColor="@color/white"
-            android:maxLines="1"
             android:ellipsize="end"
-            android:paddingHorizontal="10dp"/>
-    </LinearLayout>
+            android:maxLines="1"
+            android:paddingHorizontal="10dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="50sp" />
 
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

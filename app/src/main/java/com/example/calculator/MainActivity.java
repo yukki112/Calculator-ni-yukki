@@ -1,12 +1,15 @@
 package com.example.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import android.app.Dialog;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import java.text.DecimalFormat;
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private char currentSymbol = '0';
     private boolean isDegreeMode = true;
+    private boolean isDarkMode = true;
 
     private double firstValue = Double.NaN;
     private double secondValue;
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
             buttonOFF, buttonEqual, buttonSin, buttonCos, buttonTan, buttonLog, buttonLn, buttonSqrt,
             buttonPower, buttonFact;
 
+    private Button btnDarkMode, btnLightMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +51,100 @@ public class MainActivity extends AppCompatActivity {
         inputDisplay = findViewById(R.id.input);
         outputDisplay = findViewById(R.id.output);
 
+        // Initialize theme toggle buttons
+        btnDarkMode = findViewById(R.id.btnDarkMode);
+        btnLightMode = findViewById(R.id.btnLightMode);
+
+        // Set initial theme
+        setDarkMode();
+
+        // Set theme toggle listeners
+        btnDarkMode.setOnClickListener(v -> setDarkMode());
+        btnLightMode.setOnClickListener(v -> setLightMode());
+
         initializeButtons();
         setupNumberButtons();
         setupOperationButtons();
         setupScientificButtons();
         setupOtherButtons();
     }
+
+    private void setDarkMode() {
+        isDarkMode = true;
+
+        // Update display text colors
+        inputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
+        outputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+        // Update button states
+        btnDarkMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_button_active)));
+        btnLightMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.light_button_inactive)));
+
+        btnDarkMode.setTextColor(ContextCompat.getColor(this, R.color.white));
+        btnLightMode.setTextColor(ContextCompat.getColor(this, R.color.black));
+
+        // Update calculator buttons
+        updateCalculatorButtonsTheme();
+    }
+
+    private void setLightMode() {
+        isDarkMode = false;
+
+        // Update display text colors
+        inputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
+        outputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+        // Update button states
+        btnDarkMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_button_inactive)));
+        btnLightMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.light_button_active)));
+
+        btnDarkMode.setTextColor(ContextCompat.getColor(this, R.color.white));
+        btnLightMode.setTextColor(ContextCompat.getColor(this, R.color.black));
+
+        // Update calculator buttons
+        updateCalculatorButtonsTheme();
+    }
+
+    private void updateCalculatorButtonsTheme() {
+        int whiteTextColor = ContextCompat.getColor(this, R.color.white);
+        int blackTextColor = ContextCompat.getColor(this, R.color.black);
+        int navyColor = ContextCompat.getColor(this, R.color.navy);
+        int grayColor = ContextCompat.getColor(this, R.color.gray);
+        int lightBlackColor = ContextCompat.getColor(this, R.color.dark_number_bg);
+        int whiteBgColor = ContextCompat.getColor(this, R.color.light_number_bg);
+        int defaultTextColor = isDarkMode ? whiteTextColor : blackTextColor;
+        int numberBgColor = isDarkMode ? lightBlackColor : whiteBgColor;
+
+        MaterialButton[] allButtons = {
+                button0, button1, button2, button3, button4, button5, button6, button7, button8, button9,
+                buttonDot, buttonAdd, buttonSub, buttonMultiply, buttonDivide, buttonPercent, buttonClear,
+                buttonOFF, buttonEqual, buttonSin, buttonCos, buttonTan, buttonLog, buttonLn, buttonSqrt,
+                buttonPower, buttonFact
+        };
+
+        for (MaterialButton button : allButtons) {
+            if (button != null) {
+                button.setTextColor(whiteTextColor);
+
+                boolean isNumberOrDot = button == button0 || button == button1 || button == button2 ||
+                        button == button3 || button == button4 || button == button5 ||
+                        button == button6 || button == button7 || button == button8 ||
+                        button == button9 || button == buttonDot;
+
+                if (isNumberOrDot) {
+                    button.setBackgroundTintList(ColorStateList.valueOf(numberBgColor));
+                    button.setTextColor(defaultTextColor);
+                } else {
+                    int bgColor = isDarkMode ? grayColor : navyColor;
+                    button.setBackgroundTintList(ColorStateList.valueOf(bgColor));
+                    button.setTextColor(whiteTextColor);
+                }
+            }
+        }
+    }
+
+
+
 
     private void initializeButtons() {
         button0 = findViewById(R.id.btn0);
@@ -137,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         buttonCos.setOnClickListener(v -> calculateTrigFunction("cos"));
         buttonTan.setOnClickListener(v -> calculateTrigFunction("tan"));
         buttonLog.setOnClickListener(v -> calculateScientificFunction("log", value -> Math.log10(value)));
-        buttonLn.setOnClickListener(v -> showMembers()); // Changed to show popup instead of ln function
+        buttonLn.setOnClickListener(v -> showMembers());
         buttonSqrt.setOnClickListener(v -> calculateScientificFunction("√", value -> Math.sqrt(value)));
         buttonFact.setOnClickListener(v -> calculateFactorial());
     }
@@ -317,4 +411,6 @@ public class MainActivity extends AppCompatActivity {
     interface ScientificFunction {
         double calculate(double value);
     }
+
 }
+

@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Predefined colors -->
     <color name="navy">#2F4156</color>
     <color name="teal">#567C8D</color>
     <color name="beige">#F5EFEB</color>
     <color name="sky_blue">#C8D9E6</color>
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
-
-
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="dark_button_active">#FF424242</color>
+    <color name="dark_button_inactive">#FF757575</color>
+    <color name="light_button_active">#FFE0E0E0</color>
+    <color name="light_button_inactive">#FFBDBDBD</color>
+    <color name="dark_button_bg">#FF212121</color>
+    <color name="light_button_bg">#FFEEEEEE</color>
+    <color name="light_number_bg">#FFFFFF</color>
+    <color name="light_number_text">#000000</color>
+    <color name="light_operator_bg">#2F4156</color>
+    <color name="dark_number_bg">#2A2A2A</color>
+    <color name="dark_number_text">#FFFFFF</color>
+    <color name="dark_operator_bg">#757575</color>
+    <color name="gray">#757575</color>
 </resources>
