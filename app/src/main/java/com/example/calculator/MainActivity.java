@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnDarkMode, btnLightMode;
 
-    // Game-related variables
+
     private int zeroClickCount = 0;
     private long lastZeroClickTime = 0;
     private static final int CLICKS_NEEDED = 5;
-    private static final long CLICK_TIMEOUT = 2000; // 2 seconds
+    private static final long CLICK_TIMEOUT = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +61,14 @@ public class MainActivity extends AppCompatActivity {
         inputDisplay = findViewById(R.id.input);
         outputDisplay = findViewById(R.id.output);
 
-        // Initialize theme toggle buttons
+
         btnDarkMode = findViewById(R.id.btnDarkMode);
         btnLightMode = findViewById(R.id.btnLightMode);
 
-        // Set initial theme
+
         setDarkMode();
 
-        // Set theme toggle listeners
+
         btnDarkMode.setOnClickListener(v -> setDarkMode());
         btnLightMode.setOnClickListener(v -> setLightMode());
 
@@ -82,36 +82,36 @@ public class MainActivity extends AppCompatActivity {
     private void setDarkMode() {
         isDarkMode = true;
 
-        // Update display text colors
+
         inputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
         outputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
 
-        // Update button states
+
         btnDarkMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_button_active)));
         btnLightMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.light_button_inactive)));
 
         btnDarkMode.setTextColor(ContextCompat.getColor(this, R.color.white));
         btnLightMode.setTextColor(ContextCompat.getColor(this, R.color.black));
 
-        // Update calculator buttons
+
         updateCalculatorButtonsTheme();
     }
 
     private void setLightMode() {
         isDarkMode = false;
 
-        // Update display text colors
+
         inputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
         outputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
 
-        // Update button states
+
         btnDarkMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_button_inactive)));
         btnLightMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.light_button_active)));
 
         btnDarkMode.setTextColor(ContextCompat.getColor(this, R.color.white));
         btnLightMode.setTextColor(ContextCompat.getColor(this, R.color.black));
 
-        // Update calculator buttons
+
         updateCalculatorButtonsTheme();
     }
 
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                 inputDisplay.append(value);
             }
 
-            // Special handling for zero button
+
             if (button == button0) {
                 long currentTime = System.currentTimeMillis();
                 if (currentTime - lastZeroClickTime > CLICK_TIMEOUT) {
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout gameContainer = gameDialog.findViewById(R.id.gameContainer);
         Button btnCloseGame = gameDialog.findViewById(R.id.btnCloseGame);
 
-        // Array of all member drawable resources
+
         int[] memberImages = {
                 R.drawable.bantilan,
                 R.drawable.baturi,
@@ -310,28 +310,28 @@ public class MainActivity extends AppCompatActivity {
         Runnable gameRunnable = new Runnable() {
             @Override
             public void run() {
-                // Create a FrameLayout to hold our circular image
+
                 FrameLayout circleContainer = new FrameLayout(MainActivity.this);
                 FrameLayout.LayoutParams containerParams = new FrameLayout.LayoutParams(100, 100);
                 circleContainer.setLayoutParams(containerParams);
-                circleContainer.setBackgroundResource(R.drawable.circle); // Set circular background
+                circleContainer.setBackgroundResource(R.drawable.circle);
 
-                // Create the ImageView
+
                 ImageView member = new ImageView(MainActivity.this);
                 member.setLayoutParams(new FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.MATCH_PARENT,
                         FrameLayout.LayoutParams.MATCH_PARENT));
                 member.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-                // Randomly select a member image
+
                 Random random = new Random();
                 int randomImageIndex = random.nextInt(memberImages.length);
                 member.setImageResource(memberImages[randomImageIndex]);
 
-                // Add the ImageView to the circular container
+
                 circleContainer.addView(member);
 
-                // Position the circle
+
                 int maxX = gameContainer.getWidth() - 100;
                 int maxY = gameContainer.getHeight() - 100;
                 if (maxX > 0 && maxY > 0) {
@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        // [Rest of the timer and dialog setup code remains the same...]
+
         Runnable timerRunnable = new Runnable() {
             @Override
             public void run() {

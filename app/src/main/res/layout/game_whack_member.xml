@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Whack a Member!"
+            android:fontFamily="@font/pixelify_sans_semibold"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="24sp"
@@ -26,8 +27,10 @@
             android:id="@+id/scoreText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pixelify_sans_semibold"
             android:layout_marginTop="10dp"
             android:text="Score: 0"
+
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="18sp" />
@@ -36,6 +39,7 @@
             android:id="@+id/timeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pixelify_sans_semibold"
             android:text="Time: 30s"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -53,6 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/pixelify_sans_semibold"
             android:text="Close Game"
             android:textAllCaps="false" />
 
