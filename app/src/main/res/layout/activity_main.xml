@@ -22,6 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dark"
+            android:fontFamily="@font/pixelify_sans_semibold"
             android:textColor="@color/white"
             android:backgroundTint="@color/black" />
 
@@ -30,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Light"
+            android:fontFamily="@font/pixelify_sans_semibold"
             android:layout_marginStart="16dp"
             android:textColor="@color/black"
             android:backgroundTint="@color/white" />

@@ -5,14 +5,18 @@ import androidx.core.content.ContextCompat;
 import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import java.text.DecimalFormat;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
             buttonPower, buttonFact;
 
     private Button btnDarkMode, btnLightMode;
+
+    // Game-related variables
+    private int zeroClickCount = 0;
+    private long lastZeroClickTime = 0;
+    private static final int CLICKS_NEEDED = 5;
+    private static final long CLICK_TIMEOUT = 2000; // 2 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,9 +153,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     private void initializeButtons() {
         button0 = findViewById(R.id.btn0);
         button1 = findViewById(R.id.btn1);
@@ -198,6 +205,21 @@ public class MainActivity extends AppCompatActivity {
                 inputDisplay.setText(value);
             } else {
                 inputDisplay.append(value);
+            }
+
+            // Special handling for zero button
+            if (button == button0) {
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastZeroClickTime > CLICK_TIMEOUT) {
+                    zeroClickCount = 1;
+                } else {
+                    zeroClickCount++;
+                    if (zeroClickCount >= CLICKS_NEEDED) {
+                        showWhackAMemberGame();
+                        zeroClickCount = 0;
+                    }
+                }
+                lastZeroClickTime = currentTime;
             }
         });
     }
@@ -255,6 +277,120 @@ public class MainActivity extends AppCompatActivity {
             window.setLayout(
                     (int)(getResources().getDisplayMetrics().widthPixels * 0.8),
                     android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+        }
+    }
+
+    private void showWhackAMemberGame() {
+        Dialog gameDialog = new Dialog(this);
+        gameDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        gameDialog.setCancelable(true);
+        gameDialog.setContentView(R.layout.game_whack_member);
+
+        TextView scoreText = gameDialog.findViewById(R.id.scoreText);
+        TextView timeText = gameDialog.findViewById(R.id.timeText);
+        FrameLayout gameContainer = gameDialog.findViewById(R.id.gameContainer);
+        Button btnCloseGame = gameDialog.findViewById(R.id.btnCloseGame);
+
+        // Array of all member drawable resources
+        int[] memberImages = {
+                R.drawable.bantilan,
+                R.drawable.baturi,
+                R.drawable.carranza,
+                R.drawable.condes,
+                R.drawable.delantar,
+                R.drawable.pusa,
+                R.drawable.viray
+        };
+
+        int[] score = {0};
+        int[] timeLeft = {30};
+
+        Handler handler = new Handler();
+        Runnable gameRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // Create a FrameLayout to hold our circular image
+                FrameLayout circleContainer = new FrameLayout(MainActivity.this);
+                FrameLayout.LayoutParams containerParams = new FrameLayout.LayoutParams(100, 100);
+                circleContainer.setLayoutParams(containerParams);
+                circleContainer.setBackgroundResource(R.drawable.circle); // Set circular background
+
+                // Create the ImageView
+                ImageView member = new ImageView(MainActivity.this);
+                member.setLayoutParams(new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT));
+                member.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                // Randomly select a member image
+                Random random = new Random();
+                int randomImageIndex = random.nextInt(memberImages.length);
+                member.setImageResource(memberImages[randomImageIndex]);
+
+                // Add the ImageView to the circular container
+                circleContainer.addView(member);
+
+                // Position the circle
+                int maxX = gameContainer.getWidth() - 100;
+                int maxY = gameContainer.getHeight() - 100;
+                if (maxX > 0 && maxY > 0) {
+                    circleContainer.setX(random.nextInt(maxX));
+                    circleContainer.setY(random.nextInt(maxY));
+                }
+
+                circleContainer.setOnClickListener(v -> {
+                    gameContainer.removeView(v);
+                    score[0]++;
+                    scoreText.setText("Score: " + score[0]);
+                });
+
+                gameContainer.addView(circleContainer);
+
+                new Handler().postDelayed(() -> {
+                    if (circleContainer.getParent() != null) {
+                        gameContainer.removeView(circleContainer);
+                    }
+                }, 1000);
+
+                if (timeLeft[0] > 0) {
+                    handler.postDelayed(this, 800);
+                }
+            }
+        };
+
+        // [Rest of the timer and dialog setup code remains the same...]
+        Runnable timerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                timeLeft[0]--;
+                timeText.setText("Time: " + timeLeft[0] + "s");
+
+                if (timeLeft[0] > 0) {
+                    handler.postDelayed(this, 1000);
+                } else {
+                    handler.removeCallbacks(gameRunnable);
+                    timeText.setText("Game Over! Final Score: " + score[0]);
+                }
+            }
+        };
+
+        btnCloseGame.setOnClickListener(v -> {
+            handler.removeCallbacksAndMessages(null);
+            gameDialog.dismiss();
+        });
+
+        handler.post(gameRunnable);
+        handler.post(timerRunnable);
+
+        gameDialog.show();
+
+        Window window = gameDialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+            window.setLayout(
+                    (int)(getResources().getDisplayMetrics().widthPixels * 0.9),
+                    LinearLayout.LayoutParams.WRAP_CONTENT
             );
         }
     }
@@ -411,6 +547,4 @@ public class MainActivity extends AppCompatActivity {
     interface ScientificFunction {
         double calculate(double value);
     }
-
 }
-

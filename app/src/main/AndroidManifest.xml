@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Calculator">
         <activity
+            android:name=".game_whack_member"
+            android:exported="false" />
+        <activity
             android:name=".CircleShape"
             android:exported="false" />
         <activity
