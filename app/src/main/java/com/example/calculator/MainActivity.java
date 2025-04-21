@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private char currentSymbol = '0';
     private boolean isDegreeMode = true;
     private boolean isDarkMode = true;
+    private boolean isFrozen = false;
 
     private double firstValue = Double.NaN;
     private double secondValue;
@@ -45,11 +47,15 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnDarkMode, btnLightMode;
 
-
     private int zeroClickCount = 0;
     private long lastZeroClickTime = 0;
     private static final int CLICKS_NEEDED = 5;
     private static final long CLICK_TIMEOUT = 2000;
+
+    // For freeze mode
+    private StringBuilder freezeCodeInput = new StringBuilder();
+    private static final String FREEZE_CODE = "9999";
+    private static final long FREEZE_DURATION = 10000; // 10 seconds in milliseconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +67,10 @@ public class MainActivity extends AppCompatActivity {
         inputDisplay = findViewById(R.id.input);
         outputDisplay = findViewById(R.id.output);
 
-
         btnDarkMode = findViewById(R.id.btnDarkMode);
         btnLightMode = findViewById(R.id.btnLightMode);
 
-
         setDarkMode();
-
 
         btnDarkMode.setOnClickListener(v -> setDarkMode());
         btnLightMode.setOnClickListener(v -> setLightMode());
@@ -79,13 +82,67 @@ public class MainActivity extends AppCompatActivity {
         setupOtherButtons();
     }
 
-    private void setDarkMode() {
-        isDarkMode = true;
+    // Add this method to handle freeze mode
+    private void checkForFreezeCode(String input) {
+        if (isFrozen) return;
 
+        freezeCodeInput.append(input);
+
+        // If the input is longer than the freeze code, reset
+        if (freezeCodeInput.length() > FREEZE_CODE.length()) {
+            freezeCodeInput.setLength(0);
+            freezeCodeInput.append(input);
+        }
+
+        // Check if the input matches the freeze code
+        if (FREEZE_CODE.equals(freezeCodeInput.toString())) {
+            activateFreezeMode();
+            freezeCodeInput.setLength(0);
+        }
+    }
+
+    // Add this method to activate freeze mode
+    private void activateFreezeMode() {
+        isFrozen = true;
+        Toast.makeText(this, "🧊 Frozen. You calculated too hard.", Toast.LENGTH_SHORT).show();
+
+        // Disable all buttons
+        setButtonsEnabled(false);
+
+        // Set up handler to unfreeze after delay
+        new Handler().postDelayed(() -> {
+            isFrozen = false;
+            setButtonsEnabled(true);
+            Toast.makeText(this, "Calculator unfrozen!", Toast.LENGTH_SHORT).show();
+        }, FREEZE_DURATION);
+    }
+
+    // Add this method to enable/disable all buttons
+    private void setButtonsEnabled(boolean enabled) {
+        MaterialButton[] allButtons = {
+                button0, button1, button2, button3, button4, button5, button6, button7, button8, button9,
+                buttonDot, buttonAdd, buttonSub, buttonMultiply, buttonDivide, buttonPercent, buttonClear,
+                buttonOFF, buttonEqual, buttonSin, buttonCos, buttonTan, buttonLog, buttonLn, buttonSqrt,
+                buttonPower, buttonFact
+        };
+
+        for (MaterialButton button : allButtons) {
+            if (button != null) {
+                button.setEnabled(enabled);
+            }
+        }
+
+        btnDarkMode.setEnabled(enabled);
+        btnLightMode.setEnabled(enabled);
+    }
+
+    private void setDarkMode() {
+        if (isFrozen) return;
+
+        isDarkMode = true;
 
         inputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
         outputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
-
 
         btnDarkMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_button_active)));
         btnLightMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.light_button_inactive)));
@@ -93,24 +150,22 @@ public class MainActivity extends AppCompatActivity {
         btnDarkMode.setTextColor(ContextCompat.getColor(this, R.color.white));
         btnLightMode.setTextColor(ContextCompat.getColor(this, R.color.black));
 
-
         updateCalculatorButtonsTheme();
     }
 
     private void setLightMode() {
-        isDarkMode = false;
+        if (isFrozen) return;
 
+        isDarkMode = false;
 
         inputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
         outputDisplay.setTextColor(ContextCompat.getColor(this, R.color.white));
-
 
         btnDarkMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.dark_button_inactive)));
         btnLightMode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.light_button_active)));
 
         btnDarkMode.setTextColor(ContextCompat.getColor(this, R.color.white));
         btnLightMode.setTextColor(ContextCompat.getColor(this, R.color.black));
-
 
         updateCalculatorButtonsTheme();
     }
@@ -200,13 +255,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void setNumberButtonListener(MaterialButton button, String value) {
         button.setOnClickListener(view -> {
+            if (isFrozen) return;
+
+            checkForFreezeCode(value);
+
             if (inputDisplay.getText().toString().equals("0") ||
                     inputDisplay.getText().toString().equals("Error")) {
                 inputDisplay.setText(value);
             } else {
                 inputDisplay.append(value);
             }
-
 
             if (button == button0) {
                 long currentTime = System.currentTimeMillis();
@@ -235,6 +293,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setOperatorButtonListener(MaterialButton button, char operator, String symbol) {
         button.setOnClickListener(view -> {
+            if (isFrozen) return;
+
             if (inputDisplay.getText().length() > 0) {
                 if (Double.isNaN(firstValue)) {
                     firstValue = Double.parseDouble(inputDisplay.getText().toString());
@@ -249,13 +309,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupScientificButtons() {
-        buttonSin.setOnClickListener(v -> calculateTrigFunction("sin"));
-        buttonCos.setOnClickListener(v -> calculateTrigFunction("cos"));
-        buttonTan.setOnClickListener(v -> calculateTrigFunction("tan"));
-        buttonLog.setOnClickListener(v -> calculateScientificFunction("log", value -> Math.log10(value)));
-        buttonLn.setOnClickListener(v -> showMembers());
-        buttonSqrt.setOnClickListener(v -> calculateScientificFunction("√", value -> Math.sqrt(value)));
-        buttonFact.setOnClickListener(v -> calculateFactorial());
+        buttonSin.setOnClickListener(v -> {
+            if (isFrozen) return;
+            calculateTrigFunction("sin");
+        });
+        buttonCos.setOnClickListener(v -> {
+            if (isFrozen) return;
+            calculateTrigFunction("cos");
+        });
+        buttonTan.setOnClickListener(v -> {
+            if (isFrozen) return;
+            calculateTrigFunction("tan");
+        });
+        buttonLog.setOnClickListener(v -> {
+            if (isFrozen) return;
+            calculateScientificFunction("log", value -> Math.log10(value));
+        });
+        buttonLn.setOnClickListener(v -> {
+            if (isFrozen) return;
+            showMembers();
+        });
+        buttonSqrt.setOnClickListener(v -> {
+            if (isFrozen) return;
+            calculateScientificFunction("√", value -> Math.sqrt(value));
+        });
+        buttonFact.setOnClickListener(v -> {
+            if (isFrozen) return;
+            calculateFactorial();
+        });
     }
 
     private void showMembers() {
@@ -292,7 +373,6 @@ public class MainActivity extends AppCompatActivity {
         FrameLayout gameContainer = gameDialog.findViewById(R.id.gameContainer);
         Button btnCloseGame = gameDialog.findViewById(R.id.btnCloseGame);
 
-
         int[] memberImages = {
                 R.drawable.bantilan,
                 R.drawable.baturi,
@@ -310,12 +390,10 @@ public class MainActivity extends AppCompatActivity {
         Runnable gameRunnable = new Runnable() {
             @Override
             public void run() {
-
                 FrameLayout circleContainer = new FrameLayout(MainActivity.this);
                 FrameLayout.LayoutParams containerParams = new FrameLayout.LayoutParams(100, 100);
                 circleContainer.setLayoutParams(containerParams);
                 circleContainer.setBackgroundResource(R.drawable.circle);
-
 
                 ImageView member = new ImageView(MainActivity.this);
                 member.setLayoutParams(new FrameLayout.LayoutParams(
@@ -323,14 +401,11 @@ public class MainActivity extends AppCompatActivity {
                         FrameLayout.LayoutParams.MATCH_PARENT));
                 member.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-
                 Random random = new Random();
                 int randomImageIndex = random.nextInt(memberImages.length);
                 member.setImageResource(memberImages[randomImageIndex]);
 
-
                 circleContainer.addView(member);
-
 
                 int maxX = gameContainer.getWidth() - 100;
                 int maxY = gameContainer.getHeight() - 100;
@@ -358,7 +433,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
 
         Runnable timerRunnable = new Runnable() {
             @Override
@@ -474,14 +548,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupOtherButtons() {
         buttonDot.setOnClickListener(view -> {
+            if (isFrozen) return;
             if (!inputDisplay.getText().toString().contains(".")) {
                 inputDisplay.append(".");
             }
         });
 
-        buttonClear.setOnClickListener(view -> clear());
-        buttonOFF.setOnClickListener(view -> finish());
-        buttonEqual.setOnClickListener(view -> calculateResult());
+        buttonClear.setOnClickListener(view -> {
+            if (isFrozen) return;
+            clear();
+        });
+
+        buttonOFF.setOnClickListener(view -> {
+            if (isFrozen) return;
+            finish();
+        });
+
+        buttonEqual.setOnClickListener(view -> {
+            if (isFrozen) return;
+            calculateResult();
+        });
     }
 
     private void clear() {
