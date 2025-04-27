@@ -31,6 +31,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
                 android:src="@drawable/viray"
             android:layout_marginEnd="8dp"/>
             <TextView
@@ -48,11 +51,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/pusa"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
+                android:src="@drawable/alit"
                 android:layout_marginEnd="8dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -73,7 +80,10 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/pusa"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
+                android:src="@drawable/canapit"
                 android:layout_marginEnd="8dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -94,6 +104,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
                 android:src="@drawable/carranza"
                 android:layout_marginEnd="8dp"/>
             <TextView
@@ -115,6 +128,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
                 android:src="@drawable/delantar"
                 android:layout_marginEnd="8dp"/>
             <TextView
@@ -136,6 +152,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
                 android:src="@drawable/condes"
                 android:layout_marginEnd="8dp"/>
             <TextView
@@ -157,6 +176,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
                 android:src="@drawable/baturi"
                 android:layout_marginEnd="8dp"/>
             <TextView
@@ -178,6 +200,9 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
                 android:src="@drawable/bantilan"
                 android:layout_marginEnd="8dp"/>
             <TextView
@@ -199,7 +224,10 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/pusa"
+                android:src="@drawable/murillo"
+                android:background="@drawable/circle_background"
+                android:scaleType="centerCrop"
+                android:clipToOutline="true"
                 android:layout_marginEnd="8dp"/>
             <TextView
                 android:layout_width="wrap_content"

@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int CLICKS_NEEDED = 5;
     private static final long CLICK_TIMEOUT = 2000;
 
-    // For freeze mode
+
     private StringBuilder freezeCodeInput = new StringBuilder();
-    private static final String FREEZE_CODE = "9999";
+    private static final String FREEZE_CODE = "0123456789";
     private static final long FREEZE_DURATION = 10000; // 10 seconds in milliseconds
 
     @Override
@@ -82,34 +82,31 @@ public class MainActivity extends AppCompatActivity {
         setupOtherButtons();
     }
 
-    // Add this method to handle freeze mode
     private void checkForFreezeCode(String input) {
         if (isFrozen) return;
 
         freezeCodeInput.append(input);
 
-        // If the input is longer than the freeze code, reset
+
         if (freezeCodeInput.length() > FREEZE_CODE.length()) {
             freezeCodeInput.setLength(0);
             freezeCodeInput.append(input);
         }
 
-        // Check if the input matches the freeze code
+
         if (FREEZE_CODE.equals(freezeCodeInput.toString())) {
             activateFreezeMode();
             freezeCodeInput.setLength(0);
         }
     }
 
-    // Add this method to activate freeze mode
+
     private void activateFreezeMode() {
         isFrozen = true;
-        Toast.makeText(this, "🧊 Frozen. You calculated too hard.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "🧊 Frozen. You calculated too hard, take it easy babe!.", Toast.LENGTH_SHORT).show();
 
-        // Disable all buttons
         setButtonsEnabled(false);
 
-        // Set up handler to unfreeze after delay
         new Handler().postDelayed(() -> {
             isFrozen = false;
             setButtonsEnabled(true);
@@ -117,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         }, FREEZE_DURATION);
     }
 
-    // Add this method to enable/disable all buttons
+
     private void setButtonsEnabled(boolean enabled) {
         MaterialButton[] allButtons = {
                 button0, button1, button2, button3, button4, button5, button6, button7, button8, button9,
@@ -379,7 +376,9 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.carranza,
                 R.drawable.condes,
                 R.drawable.delantar,
-                R.drawable.pusa,
+                R.drawable.murillo,
+                R.drawable.canapit,
+                R.drawable.alit,
                 R.drawable.viray
         };
 
