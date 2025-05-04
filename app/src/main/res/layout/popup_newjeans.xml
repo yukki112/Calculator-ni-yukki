@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pixelify_sans_semibold"
-                android:text="Yukki Ang nag iisang GOD"
+                android:text="Viray, Stephen Kyle"
                 android:textSize="16sp"
                 android:textColor="@color/black"
                 android:gravity="center_vertical"

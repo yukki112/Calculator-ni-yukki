@@ -49,13 +49,13 @@ public class MainActivity extends AppCompatActivity {
 
     private int zeroClickCount = 0;
     private long lastZeroClickTime = 0;
-    private static final int CLICKS_NEEDED = 5;
+    private static final int CLICKS_NEEDED = 10;
     private static final long CLICK_TIMEOUT = 2000;
 
 
     private StringBuilder freezeCodeInput = new StringBuilder();
-    private static final String FREEZE_CODE = "0123456789";
-    private static final long FREEZE_DURATION = 10000; // 10 seconds in milliseconds
+    private static final String FREEZE_CODE = "143";
+    private static final long FREEZE_DURATION = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void activateFreezeMode() {
         isFrozen = true;
-        Toast.makeText(this, "🧊 Frozen. You calculated too hard, take it easy babe!.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "No love here!! 😡", Toast.LENGTH_SHORT).show();
 
         setButtonsEnabled(false);
 
         new Handler().postDelayed(() -> {
             isFrozen = false;
             setButtonsEnabled(true);
-            Toast.makeText(this, "Calculator unfrozen!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Don't do it again!!", Toast.LENGTH_SHORT).show();
         }, FREEZE_DURATION);
     }
 
